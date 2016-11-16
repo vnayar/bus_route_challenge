@@ -1,0 +1,22 @@
+group 'busroute'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'application'
+apply plugin: 'java'
+apply plugin: 'idea'
+
+mainClassName = 'busroute.Server'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile 'com.google.guava:guava:20.0'
+    compile 'com.sparkjava:spark-core:2.5.2'
+    compile 'org.slf4j:slf4j-simple:1.7.21'
+    compile 'com.google.code.gson:gson:2.8.0'
+}
