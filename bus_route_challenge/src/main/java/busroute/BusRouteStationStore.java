@@ -9,12 +9,20 @@ import java.util.Set;
 
 
 /**
- * Created by vnayar on 11/15/16.
+ * Logic to read bus routes and stations into memory as well as simple operations.
  */
 public class BusRouteStationStore {
 
   private Map<Integer, Station> stationMap;
 
+  /**
+   * Load a textual representation of bus route data in the following format:
+   *   [Number of Stations]
+   *   [Bus Route ID 1] [Station ID 1] [Station ID 2] ...
+   *   [Bus Route ID 2] ...
+   * @param reader A Reader object that can provide the above text data.
+   * @throws IOException
+   */
   public void loadBusRoutes(Reader reader) throws IOException {
     BufferedReader bufferedReader = new BufferedReader(reader);
     int numStations = Integer.valueOf(bufferedReader.readLine());
@@ -41,6 +49,11 @@ public class BusRouteStationStore {
     }
   }
 
+  /**
+   * @param departStationId The station id one wishes to be picked up from.
+   * @param arriveStationId The station id one wishes to arrive at.
+   * @return Whether a single bus route can take one from departStationId to arriveStationId.
+   */
   public boolean hasDirectRoute(int departStationId, int arriveStationId) {
     Station departStation = getStation(departStationId);
     Station arriveStation = getStation(arriveStationId);
@@ -51,7 +64,7 @@ public class BusRouteStationStore {
     return intersection.size() > 0;
   }
 
-  public Station getStation(Integer stationId) {
+  public Station getStation(int stationId) {
     if (stationMap.containsKey(stationId)) {
       return stationMap.get(stationId);
     } else {
@@ -61,6 +74,10 @@ public class BusRouteStationStore {
     }
   }
 
+  /**
+   * A useful representation of a Station indicating the set of all routes that depart
+   * and arrive at that station.
+   */
   public class Station {
     public int id;
     public Set<Integer> departures;

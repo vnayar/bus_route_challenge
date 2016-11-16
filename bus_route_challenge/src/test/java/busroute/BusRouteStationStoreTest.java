@@ -12,12 +12,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
-/**
- * Created by vnayar on 11/15/16.
- */
 public class BusRouteStationStoreTest {
 
-  StringReader routes1;
+  private StringReader routes1;
 
   public BusRouteStationStoreTest() {
     String input1 = new StringBuilder()

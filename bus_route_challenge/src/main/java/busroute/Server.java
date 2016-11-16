@@ -13,15 +13,22 @@ import java.io.IOException;
 import static spark.Spark.*;
 
 /**
- * Created by vnayar on 11/15/16.
+ * The main server for receiving REST requests.  Currently only the following action is supported:
+ * - GET /api/direct?dep_sid=<departure_station_id>&arr_sid=<arrival_station_id>
  */
 public class Server {
 
   private static BusRouteStationStore busRouteStationStore = new BusRouteStationStore();
 
+  /**
+   * A Java representation of the response returned from a GET /api/direct request.
+   */
   private static class ApiDirectResponse {
+    /// Departure station id.
     @SerializedName("dep_sid") private int depSid;
+    /// Arrival station id.
     @SerializedName("arr_sid") private int arrSid;
+    /// Whether a direct bus route exists or not.
     @SerializedName("direct_bus_route") private boolean directBusRoute;
 
     public ApiDirectResponse(int depSid, int arrSid, boolean directBusRoute) {
@@ -33,19 +40,20 @@ public class Server {
 
   public static void main(String[] args) {
     if (args.length < 1) {
-      System.out.println("Input file name must be provided.");
+      System.out.println("ERROR: Missing bus route input file!");
       return;
     }
     try {
       busRouteStationStore.loadBusRoutes(new FileReader(args[0]));
     } catch(FileNotFoundException e) {
-      System.out.println("Could not locate file " + args[0]);
+      System.out.println("ERROR: Could not locate file " + args[0]);
+      return;
     } catch (IOException e) {
-      System.out.println("File format violation in " + args[0]);
+      System.out.println("ERROR: File format violation in " + args[0]);
+      return;
     }
 
     port(8088);
-    get("/hello", (request, response) -> "Hello World");
     // http://localhost:8088/api/direct?dep_sid={}&arr_sid={}
     get("/api/direct", (request, response) -> {
       int departureId;
